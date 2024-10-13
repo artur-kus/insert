@@ -24,13 +24,6 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public void changeStatus(Long id, OrderStatus status) throws NotFoundException {
-        OrderEntity order = get(id);
-        order.setStatus(status);
-        orderRepository.save(order);
-    }
-
-    @Override
     public OrderEntity get(Long id) throws NotFoundException {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(OrderEntity.class, id));

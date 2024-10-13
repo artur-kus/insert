@@ -28,31 +28,28 @@ public class OrderService {
     }
 
     public DefaultResponse changeStatus(Long id, OrderStatus status) throws NotFoundException {
+        OrderEntity order = orderDao.get(id);
+        if (order.getStatus().equals(status))
+            return new DefaultResponse(false, "Order actually: " + status.name(), new Date());
         return switch (status) {
-            case ACTIVE, DELIVERED -> changeStatusWithValidation(id, status);
-            case CANCELED -> {
-                orderDao.changeStatus(id, status);
-                yield getSuccessResponse(status);
+            case ACTIVE, DELIVERED -> {
+                if (order.getStatus().equals(OrderStatus.DRAFT)) {
+                    yield changeStatus(order, status);
+                } else yield new DefaultResponse(
+                        false, "Incorrect order status - " + order.getStatus(), new Date());
             }
+            case CANCELED -> changeStatus(order, status);
             default -> new DefaultResponse(false, "empty message", new Date());
         };
     }
 
-    private DefaultResponse changeStatusWithValidation(Long id, OrderStatus status) throws NotFoundException {
-        OrderEntity order = orderDao.get(id);
-        if (order.getStatus().equals(status))
-            return new DefaultResponse(false, "Order actually: " + status.name(), new Date());
-        else if (order.getStatus().equals(OrderStatus.DRAFT)) {
-            order.setStatus(status);
-            orderDao.save(order);
-            return getSuccessResponse(status);
-        } else return new DefaultResponse(
-                false,
-                "Incorrect order status - " + order.getStatus(),
-                new Date());
+    private DefaultResponse changeStatus(OrderEntity order, OrderStatus status) {
+        order.setStatus(status);
+        orderDao.save(order);
+        return getSuccessResponse(status);
     }
 
-    private DefaultResponse getSuccessResponse(OrderStatus status) {
+    DefaultResponse getSuccessResponse(OrderStatus status) {
         return new DefaultResponse(true, "Order " + status.name(), new Date());
     }
 

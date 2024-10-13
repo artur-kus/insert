@@ -12,8 +12,6 @@ public interface OrderDao {
 
     OrderEntity create(OrderHelper order);
 
-    void changeStatus(Long id, OrderStatus status) throws NotFoundException;
-
     OrderEntity get(Long id) throws NotFoundException;
 
     OrderEntity getWithItems(Long id) throws NotFoundException;
