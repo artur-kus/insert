@@ -1,8 +1,6 @@
 package top.arturkus.insert.helpers;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,16 +12,12 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class OrderHelper {
-    @NotBlank(message = "Name is mandatory")
-    private String name;
-    private Float price;
+public class OrderHelper extends SimplifiedOrderHelper {
     @NotNull(message = "Items is mandatory")
     private List<ItemHelper> items;
 
     public OrderHelper(OrderEntity order) {
-        this.name = order.getName();
-        this.price = order.getPrice();
+        super(order.getName(), order.getPrice());
         this.items = order.getItems().stream().map(ItemHelper::new).toList();
     }
 }

@@ -18,11 +18,6 @@ public class NotFoundException extends Exception {
         this.errorMessage += ".id." + id;
     }
 
-    public <T> NotFoundException(Class<T> objectClass, String message) {
-        this(objectClass);
-        this.errorMessage += "." + message;
-    }
-
     @Override
     public String getMessage() {
         return errorMessage;

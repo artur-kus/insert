@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import top.arturkus.insert.enums.OrderStatus;
 import top.arturkus.insert.exceptions.NotFoundException;
 import top.arturkus.insert.helpers.OrderHelper;
+import top.arturkus.insert.helpers.SimplifiedOrderHelper;
 import top.arturkus.insert.services.OrderService;
 
 @RestController
@@ -44,7 +45,7 @@ public class OrderController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(@PathVariable Long id,
-                                    @Valid @RequestBody OrderHelper helper) throws NotFoundException {
+                                    @Valid @RequestBody SimplifiedOrderHelper helper) throws NotFoundException {
         return new ResponseEntity<>(orderService.update(id, helper), HttpStatus.OK);
     }
 

@@ -8,6 +8,7 @@ import top.arturkus.insert.exceptions.NotFoundException;
 import top.arturkus.insert.helpers.DefaultResponse;
 import top.arturkus.insert.helpers.OrderGridHelper;
 import top.arturkus.insert.helpers.OrderHelper;
+import top.arturkus.insert.helpers.SimplifiedOrderHelper;
 import top.arturkus.insert.services.dao.OrderDao;
 
 import java.util.Date;
@@ -53,7 +54,7 @@ public class OrderService {
         return new DefaultResponse(true, "Order " + status.name(), new Date());
     }
 
-    public OrderGridHelper update(Long id, OrderHelper helper) throws NotFoundException {
+    public OrderGridHelper update(Long id, SimplifiedOrderHelper helper) throws NotFoundException {
         return new OrderGridHelper(orderDao.update(id, helper));
     }
 

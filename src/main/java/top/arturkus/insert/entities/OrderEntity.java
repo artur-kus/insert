@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Where;
 import top.arturkus.insert.entities.auditing.AuditingEntity;
 import top.arturkus.insert.enums.OrderStatus;
 import top.arturkus.insert.helpers.OrderHelper;
+import top.arturkus.insert.helpers.SimplifiedOrderHelper;
 
 import java.util.List;
 
@@ -44,13 +44,12 @@ public class OrderEntity extends AuditingEntity {
     }
 
     public OrderEntity(OrderHelper order) {
-        this.name = order.getName();
+        fillFields(order);
         this.status = OrderStatus.DRAFT;
-        this.price = order.getPrice();
         this.items = order.getItems().stream().map(i -> new ItemEntity(i, this)).toList();
     }
 
-    public void fillFields(OrderHelper helper) {
+    public void fillFields(SimplifiedOrderHelper helper) {
         this.name = helper.getName();
         this.price = helper.getPrice();
     }
